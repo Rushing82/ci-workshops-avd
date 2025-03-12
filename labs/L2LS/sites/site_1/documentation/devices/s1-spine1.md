@@ -292,6 +292,8 @@ vlan 4094
 | Ethernet4 | L2_s1-leaf3_Ethernet2 | *trunk | *20 | *- | *- | 4 |
 | Ethernet5 | L2_s1-leaf4_Ethernet2 | *trunk | *20 | *- | *- | 4 |
 | Ethernet6 | MLAG_s1-spine2_Ethernet6 | *trunk | *- | *- | *MLAG | 1 |
+| Ethernet9 | L2_s1-leaf5_Ethernet2 | *trunk | *10,20 | *- | *- | 9 |
+| Ethernet10 | L2_s1-leaf6_Ethernet2 | *trunk | *10,20 | *- | *- | 9 |
 
 *Inherited from Port-Channel Interface
 
@@ -353,6 +355,16 @@ interface Ethernet8
    ip address 10.0.0.33/31
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
+!
+interface Ethernet9
+   description L2_s1-leaf5_Ethernet2
+   no shutdown
+   channel-group 9 mode active
+!
+interface Ethernet10
+   description L2_s1-leaf6_Ethernet2
+   no shutdown
+   channel-group 9 mode active
 ```
 
 ### Port-Channel Interfaces
@@ -366,6 +378,7 @@ interface Ethernet8
 | Port-Channel1 | MLAG_s1-spine2_Port-Channel1 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel2 | L2_RACK1_Port-Channel2 | trunk | 10 | - | - | - | - | 2 | - |
 | Port-Channel4 | L2_RACK2_Port-Channel2 | trunk | 20 | - | - | - | - | 4 | - |
+| Port-Channel9 | L2_RACK3_Port-Channel2 | trunk | 10,20 | - | - | - | - | 9 | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -393,6 +406,14 @@ interface Port-Channel4
    switchport mode trunk
    switchport
    mlag 4
+!
+interface Port-Channel9
+   description L2_RACK3_Port-Channel2
+   no shutdown
+   switchport trunk allowed vlan 10,20
+   switchport mode trunk
+   switchport
+   mlag 9
 ```
 
 ### Loopback Interfaces
@@ -439,7 +460,7 @@ interface Loopback0
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
 | Vlan10 |  default  |  10.10.10.2/24  |  -  |  10.10.10.1  |  -  |  -  |
 | Vlan20 |  default  |  10.20.20.2/24  |  -  |  10.20.20.1  |  -  |  -  |
-| Vlan4093 |  default  |  10.1.253.2/31  |  -  |  -  |  -  |  -  |
+| Vlan4093 |  default  |  10.1.254.0/31  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  10.1.253.0/31  |  -  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
@@ -462,7 +483,7 @@ interface Vlan4093
    description MLAG_L3
    no shutdown
    mtu 1500
-   ip address 10.1.253.2/31
+   ip address 10.1.254.0/31
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
 !
